@@ -2,11 +2,11 @@
 import "bootstrap/dist/css/bootstrap.css";
 import { io } from "socket.io-client";
 import Message from "./messasge";
-import { useEffect } from "react";
+import { useEffect,useState } from "react";
 
 function UserPage() {
 
-
+  const [msgcloud, setmsgcloud] = useState("")
   const socket = io("http://localhost:5000/",{
     autoConnect: false,
   });
@@ -28,12 +28,22 @@ function UserPage() {
   };
 
   const sendmessage = (val: string) => {
-    console.log("function called");
+    console.log("function called",val);
+    socket.emit('sendmsg',val)
   };
+
+  socket.on('recive',(e)=>{
+    recivemessage(e)
+  })
+
+  const recivemessage = (e)=>{
+    console.log("message recived:",e)
+    setmsgcloud(e.message)
+  }
   return (
     <>
       <div>
-        the name of the user is this <br />
+        Welocome: <br />
         <div className="">
           <button onClick={sendmsg} type="button" className="btn btn-primary">
             Primary
@@ -45,7 +55,7 @@ function UserPage() {
           >
             Danger
           </button>
-          <Message msgfun={sendmessage} />
+          <Message msgfun={sendmessage} msgcl={msgcloud} />
         </div>
       </div>
     </>

@@ -1,9 +1,11 @@
 'use client'
-import { useState } from "react";
+import { useState,useRef } from "react";
 
 function Message(props) {
 
     const [message, setmessage] = useState('')
+    const messageBox  = useRef(null!)
+    const [newmess, setnewmess] = useState("")
 
     const messageHandeler = (e:Event)=>{
         setmessage(e.target.value)
@@ -12,7 +14,16 @@ function Message(props) {
 
     const send_msg = ()=>{
         console.log('button clicked')
-        props.msgfun()
+        let temp = message
+        setmessage("")
+        props.msgfun(temp)
+    }
+
+    const updatemessage = ()=>{
+      messageBox.current.appendChild(<>
+      <div>
+        message
+      </div></>)
     }
     return ( 
         <>
@@ -29,7 +40,7 @@ function Message(props) {
             <p className="mb-0 fw-bold">Live chat</p>
             <i className="fas fa-times"></i>
           </div>
-          <div className="card-body">
+          <div ref={messageBox} className="card-body">
             <div className="messages min-h-[20rem] border-gray-300 border-1 p-2 my-2 rounded-lg">
                 gjig
             </div>

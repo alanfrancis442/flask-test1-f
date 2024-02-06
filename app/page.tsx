@@ -20,18 +20,21 @@ export default function Home() {
 
   const user_login = async(e:Event)=>{
     e.preventDefault()
+    let login_data = {
+      'mail':name,
+      "pass":pass,
+    }
     const response = await fetch('http://127.0.0.1:5000/api',{
-      // method:"POST",
-      headers:{
-        'name':name,
-        "pass":pass,
-      }
+      method:"POST",
+      headers:{ 'Content-Type': 'application/json' },
+      body: JSON.stringify(login_data)
     })
     const req_data = await response.json();
     if("ok" == req_data.passed){
       router.push('/user')
     }
     console.log('request sucessfull',req_data.message)
+    // console.log('request sucessfull',)
   }
 
   return (
